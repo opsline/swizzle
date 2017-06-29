@@ -51,6 +51,9 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfg.S3Config.AccessKey, "aws_access_key", "", "AWS access key (default: read ~/.aws/credentials)")
 	RootCmd.PersistentFlags().StringVar(&cfg.S3Config.File, "aws_secret_key", "", "AWS secret key (default: read ~/.aws/credentials)")
 	RootCmd.PersistentFlags().BoolVar(&cfg.S3Config.UseMetadata, "aws_use_metadata", false, "Load AWS credentials from instance metadata endpoint (default: disabled)")
+
+	RootCmd.PersistentFlags().StringVar(&cfg.Redis.Host, "redis_host", "localhost", "Redis hostname")
+	RootCmd.PersistentFlags().IntVar(&cfg.Redis.Port, "redis_port", 6379, "Redis port number")
 }
 
 func initConfig() {

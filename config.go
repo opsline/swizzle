@@ -12,4 +12,9 @@ type Config struct {
 		AccessKey   string
 		SecretKey   string
 	}
+
+	Redis struct {
+		Host string
+		Port int
+	}
 }

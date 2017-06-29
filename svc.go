@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -62,6 +63,21 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 			"bucket":  config.S3Config.Bucket,
 			"key":     config.S3Config.File,
 			"content": content,
+		})
+	})
+
+	r.GET("/redis", func(c *gin.Context) {
+		v, err := redisPing(config)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"source": serverType,
+			"val":    v,
 		})
 	})
 
@@ -137,4 +153,20 @@ func readFileFromS3(config *Config) (string, error) {
 	}
 
 	return string(data), nil
+}
+
+func redisPing(config *Config) (int64, error) {
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%d", config.Redis.Host, config.Redis.Port),
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	res := client.Incr("swizzle_test")
+	if res.Err() != nil {
+		return 0, res.Err()
+	}
+
+	return res.Val(), nil
 }
