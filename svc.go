@@ -1,6 +1,7 @@
 package swizzle
 
 import (
+	"database/sql"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
+	_ "github.com/lib/pq" // postgresql driver
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -76,8 +78,23 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 		}
 
 		c.JSON(200, gin.H{
-			"source": serverType,
-			"val":    v,
+			"source":    serverType,
+			"redis_val": v,
+		})
+	})
+
+	r.GET("/pgsql", func(c *gin.Context) {
+		v, err := pgPing(config)
+		if err != nil {
+			c.JSON(500, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(200, gin.H{
+			"source":    serverType,
+			"pgsql_val": v,
 		})
 	})
 
@@ -169,4 +186,25 @@ func redisPing(config *Config) (int64, error) {
 	}
 
 	return res.Val(), nil
+}
+
+func pgPing(config *Config) (int64, error) {
+	db, err := sql.Open("postgres", config.Pg.URI)
+	if err != nil {
+		return 0, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return 0, err
+	}
+
+	row := db.QueryRow("SELECT count(*) FROM pg_stat_activity")
+
+	var count int64
+	if err := row.Scan(&count); err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }

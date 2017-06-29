@@ -54,6 +54,8 @@ func init() {
 
 	RootCmd.PersistentFlags().StringVar(&cfg.Redis.Host, "redis_host", "localhost", "Redis hostname")
 	RootCmd.PersistentFlags().IntVar(&cfg.Redis.Port, "redis_port", 6379, "Redis port number")
+
+	RootCmd.PersistentFlags().StringVar(&cfg.Pg.URI, "pg_uri", "postgres://postgres:postgres@localhost/postgres?sslmode=disable", "pgsql connection uri")
 }
 
 func initConfig() {

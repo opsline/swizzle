@@ -17,4 +17,8 @@ type Config struct {
 		Host string
 		Port int
 	}
+
+	Pg struct {
+		URI string
+	}
 }
