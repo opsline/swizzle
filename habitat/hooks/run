@@ -1,3 +1,4 @@
 #!/bin/bash
 
-$(hab pkg path opsline/swizzle)/bin/swizzle
+exec $(hab pkg path opsline/swizzle)/bin/swizzle
+
