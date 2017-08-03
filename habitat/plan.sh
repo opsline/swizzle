@@ -1,6 +1,6 @@
 pkg_origin=opsline
 pkg_name=swizzle
-pkg_version=1.0
+pkg_version=1.1
 pkg_maintainer="Chetan Sarva <csarva@opsline.com>"
 pkg_license=()
 pkg_source=https://foo.com/dummy/v${pkg_version}/${pkg_name}-${pkg_version}
