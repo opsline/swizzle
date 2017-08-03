@@ -37,6 +37,20 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 		})
 	})
 
+	r.GET("/config", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"source": serverType,
+			"config": config,
+		})
+	})
+
+	r.GET("/env", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"source": serverType,
+			"env":    os.Environ(),
+		})
+	})
+
 	r.GET("/status", func(c *gin.Context) {
 		status := fmt.Sprintf("%s server running on port %d up since %s (%s)",
 			serverType,

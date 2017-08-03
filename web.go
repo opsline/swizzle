@@ -18,6 +18,8 @@ func init() {
 	<ul>
 		<li><a href="/ping">/ping</a>
 		<li><a href="/echo?message=hello world">/echo</a>
+		<li><a href="/config">/config</a>
+		<li><a href="/env">/env</a>
 		<li><a href="/pgsql">/pgsql</a>
 		<li><a href="/redis">/redis</a>
 		<li><a href="/status">/status</a>
