@@ -1,4 +1,16 @@
 #!/bin/bash
 
-exec $(hab pkg path opsline/swizzle)/bin/swizzle
+vars={{pkg.svc_config_path}}/variables.env
 
+secrets.py -A get \
+    --environment $ENVIRONMENT \
+    --application $APPLICATION \
+    --format env \
+    >$vars
+
+if [ "$?" = "0" -a -s $vars ]; then
+    source $vars
+fi
+rm -f $vars
+
+exec $(hab pkg path opsline/swizzle)/bin/swizzle

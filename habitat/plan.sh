@@ -5,7 +5,7 @@ pkg_maintainer="Chetan Sarva <csarva@opsline.com>"
 pkg_license=()
 pkg_source=https://foo.com/dummy/v${pkg_version}/${pkg_name}-${pkg_version}
 pkg_shasum=
-pkg_deps=()
+pkg_deps=(python2/python chetan/boto3)
 pkg_build_deps=(core/go core/git core/musl core/gcc)
 pkg_bin_dirs=(bin)
 
@@ -79,8 +79,11 @@ do_unpack() {
 
 do_build() {
   do_build_go_static
+  fix_interpreter "$GOPATH/src/$pkg_go_path/habitat/secrets.py" python2/python bin/python
 }
 
 do_install() {
   do_install_go
+  cp -a $GOPATH/src/$pkg_go_path/habitat/secrets.py $pkg_prefix/bin/
+  chmod 755 $pkg_prefix/bin/*
 }
