@@ -1,4 +1,4 @@
-FROM golang:latest AS swizzle
+FROM golang:1.10.0 AS swizzle
 
 COPY . /go/src/github.com/opsline/swizzle
 WORKDIR /go/src/github.com/opsline/swizzle
