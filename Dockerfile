@@ -9,4 +9,7 @@ FROM 253379484728.dkr.ecr.us-east-1.amazonaws.com/opsline/chalk:latest as chalk
 FROM debian:stretch
 COPY --from=chalk /usr/local/bin/chalk /usr/local/bin/chalk
 COPY --from=swizzle /go/bin/swizzle /usr/local/bin/swizzle
-ENTRYPOINT /usr/local/bin/swizzle
+
+COPY docker/entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT /entrypoint.sh
