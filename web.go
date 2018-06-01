@@ -16,14 +16,14 @@ func init() {
 	<h1>swizzle</h1>
 	<h2>hello! select a function below:</h2>
 	<ul>
-		<li><a href="/ping">/ping</a>
-		<li><a href="/echo?message=hello world">/echo</a>
-		<li><a href="/config">/config</a>
-		<li><a href="/env">/env</a>
-		<li><a href="/pgsql">/pgsql</a>
-		<li><a href="/redis">/redis</a>
-		<li><a href="/status">/status</a>
-		<li><a href="/s3">/s3</a>
+		<li><a href="ping">/ping</a>
+		<li><a href="echo?message=hello world">/echo</a>
+		<li><a href="config">/config</a>
+		<li><a href="env">/env</a>
+		<li><a href="pgsql">/pgsql</a>
+		<li><a href="redis">/redis</a>
+		<li><a href="status">/status</a>
+		<li><a href="s3">/s3</a>
 	</ul>
 </html>
 	`)
@@ -34,7 +34,7 @@ func RunWeb(config *Config) {
 	r := gin.Default()
 	r.SetHTMLTemplate(t)
 
-	r.GET("/", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index", gin.H{})
 	})
 

@@ -23,35 +23,35 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 
 	startDate := time.Now()
 
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"source":  serverType,
 			"message": "pong",
 		})
 	})
 
-	r.GET("/echo", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/echo", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"source":  serverType,
 			"message": c.Query("message"),
 		})
 	})
 
-	r.GET("/config", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/config", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"source": serverType,
 			"config": config,
 		})
 	})
 
-	r.GET("/env", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/env", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"source": serverType,
 			"env":    os.Environ(),
 		})
 	})
 
-	r.GET("/status", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/status", func(c *gin.Context) {
 		status := fmt.Sprintf("%s server running on port %d up since %s (%s)",
 			serverType,
 			config.Port,
@@ -64,7 +64,7 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 		})
 	})
 
-	r.GET("/s3", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/s3", func(c *gin.Context) {
 
 		content, err := readFileFromS3(config)
 		if err != nil {
@@ -82,7 +82,7 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 		})
 	})
 
-	r.GET("/redis", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/redis", func(c *gin.Context) {
 		v, err := redisPing(config)
 		if err != nil {
 			c.JSON(500, gin.H{
@@ -97,7 +97,7 @@ func addServiceEndpoints(serverType string, config *Config, r *gin.Engine) {
 		})
 	})
 
-	r.GET("/pgsql", func(c *gin.Context) {
+	r.GET(config.PathPrefix+"/pgsql", func(c *gin.Context) {
 		v, err := pgPing(config)
 		if err != nil {
 			c.JSON(500, gin.H{
