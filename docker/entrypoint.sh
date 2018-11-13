@@ -6,7 +6,7 @@ _ct=$(mktemp) ; rm -f $_ct ; chalk --debug > $_ct && source $_ct ; rm -f $_ct ; 
 
 if [[ -n "$1" ]]; then
   set -x
-  exec $@
+  exec "$@"
 fi
 
 /usr/local/bin/swizzle
